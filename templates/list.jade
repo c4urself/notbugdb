@@ -1,0 +1,16 @@
+extend layout
+
+block pageHeader
+  h1 List <small>My open bugs</small>
+
+block content
+  table.table.table-condensed.table-hover.table-striped
+    each val, index in bugs
+      tr
+        td
+          a(href='/ticket/' + val.id)= val.id
+        td= val.product
+        td= val.abstract
+        td= val.status
+        td= val.severity
+        td= val.date

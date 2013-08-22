@@ -1,0 +1,18 @@
+doctype 5
+html
+  head
+    title Nimbula NotBugDB
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    div#page
+      header.navbar.navbar-inverse.navbar-fixed-top
+        div.navbar-inner
+          div.container
+            h4 Nimbula NotBugDB
+            block header
+      div.main.container
+        div.page-header
+          block pageHeader
+        section.content
+          block content

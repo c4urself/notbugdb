@@ -1,0 +1,21 @@
+{
+  "name": "bugdb",
+  "version": "0.0.0",
+  "description": "Wrapper around Oracle BugDB",
+  "main": "server.js",
+  "dependencies": {
+    "cheerio-select": "~0.0.3",
+    "cheerio": "~0.12.1",
+    "express": "~3.3.5",
+    "connect": "~2.8.4",
+    "request": "~2.26.0",
+    "jade": "~0.34.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "NODE_ENV=development ./node_modules/.bin/nodemon server.js",
+    "test": "test"
+  },
+  "author": "Christian Verkerk",
+  "license": "BSD"
+}
