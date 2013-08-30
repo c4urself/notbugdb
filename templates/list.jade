@@ -1,16 +1,28 @@
 extend layout
 
+
 block pageHeader
   h1 List <small>My open bugs</small>
 
 block content
-  table.table.table-condensed.table-hover.table-striped
-    each val, index in bugs
-      tr
-        td
-          a(href='/ticket/' + val.id)= val.id
-        td= val.product
-        td= val.abstract
-        td= val.status
-        td= val.severity
-        td= val.date
+  table.listing.table.table-condensed.table-hover.table-striped.tablesorter
+    thead
+      tr 
+        th Key
+        th Summary
+        th Assignee
+        th Reporter
+        th(data-sortinitialorder='desc') Priority
+        th Status
+        th Created
+    tbody
+      each val, index in bugs
+        tr
+          td
+            a(href='/ticket/' + val.id)= val.id
+          td= val.summary
+          td= user
+          td= val.reporter
+          td(class='severity ' + val.prettySeverity, title=val.severity + ' - ' + val.prettySeverity)= val.severity
+          td(title=val.status)= val.status
+          td= val.date

@@ -9,7 +9,9 @@
     "express": "~3.3.5",
     "connect": "~2.8.4",
     "request": "~2.26.0",
-    "jade": "~0.34.1"
+    "jade": "~0.34.1",
+    "nodemon": "~0.7.10",
+    "less-middleware": "~0.1.12"
   },
   "devDependencies": {},
   "scripts": {

@@ -4,7 +4,6 @@ var jar = request.jar();
 var request = request.defaults({jar: jar});
 var models = require('./models');
 
-var password = 'cukNlibi5auk4NJCa22754RCAVS4t9';
 
 var urls = {
     list: 'https://bug.oraclecorp.com/pls/bug/webbug_reports.my_open_bugs',
@@ -13,8 +12,20 @@ var urls = {
     item: 'https://bug.oraclecorp.com/pls/bug/webbug_edit.edit_info_by_rptno?rptno='
 };
 
+var isAuthenticated = function () {
+    return !!getCookie('ORA_UCM_INFO');
+};
 
-var doOracleLogin = function (postData, cb) {
+var getCookie = function (cookieName) {
+    for (var i = 0; i < jar.cookies.length; i++) {
+        var item = jar.cookies[i];
+        if (item.name === cookieName) {
+            return item;
+        }
+    }
+};
+
+var doOracleLogin = function (req, postData, cb) {
     request.get(urls.list, function (err, res, body) {
         var $ = cheerio.load(body);
 
@@ -25,10 +36,12 @@ var doOracleLogin = function (postData, cb) {
         postData.OAM_REQ = $('input[name=OAM_REQ]').val();
 
         request.post(urls.auth, function (err, response, body) {
-            if (jar.get('OAM_ID')) {
+            if (isAuthenticated()) {
+                req.session.user = postData.ssousername;
                 cb();
+            } else {
+                cb('Not authenticated correctly.');
             }
-            cb('Not authenticated correctly.');
         }).form(postData);
 
         // note that post gets sent on nextTick
@@ -37,12 +50,24 @@ var doOracleLogin = function (postData, cb) {
 
 module.exports = function (app) {
 
+    app.get('/', function (req, res, next) {
+        if (isAuthenticated()) {
+            res.redirect('/ticket');
+        } else {
+            res.redirect('/login');
+        }
+    });
+
     app.get('/login', function (req, res, next) {
-        res.render('login.jade', {title: 'Oracle SSO'});
+        if (isAuthenticated()) {
+            res.redirect('/ticket');
+        } else {
+            res.render('login.jade', {title: 'Oracle SSO'});
+        }
     });
 
     app.post('/login', function (req, res, next) {
-        doOracleLogin({
+        doOracleLogin(req, {
             ssousername: req.body.username,
             password: req.body.password,
         }, function (err) {
@@ -51,19 +76,17 @@ module.exports = function (app) {
                     res.send(401, html);
                 });
             } else {
-                res.redirect('ticket/');
+                res.redirect('/ticket');
             }
         });
     });
 
     app.get('/ticket', function (req, res, next) {
-        console.log('session');
-        console.log(req.session);
+        if (!isAuthenticated()) {
+            res.redirect('/login');
+        }
         var bugs = [];
         request.get(urls.list, function (err, response, body) {
-
-            console.log('jar');
-            console.log(jar);
 
             if (err) return console.error(err);
 
@@ -74,10 +97,16 @@ module.exports = function (app) {
                 var bug = new models.Bug();
                 bug.id = $('td:nth-child(3) a', this).text();
                 bug.date = $('td:nth-child(5)', this).text();
-                bug.severity = $('td:nth-child(6)', this).text();
-                bug.status = $('td:nth-child(7)', this).text();
-                bug.product = $('td:nth-child(8)', this).text();
-                bug.abstract = $('td:nth-child(11)', this).text();
+                bug.reporter = $('td:nth-child(6)', this).text();
+                bug.severity = $('td:nth-child(7)', this).text();
+                bug.status = $('td:nth-child(8)', this).text();
+                bug.product = $('td:nth-child(9)', this).text();
+                bug.component = $('td:nth-child(10)', this).text();
+                bug.version = $('td:nth-child(11)', this).text();
+                bug.summary = $('td:nth-child(12)', this).text();
+                bug.prettySeverity = models.getSeverity(bug.severity);
+                bug.prettyStatus = models.getStatus(bug.status);
+
                 bugs.push(bug);
             });
             res.render('list.jade', {bugs: bugs});

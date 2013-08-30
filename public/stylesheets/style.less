@@ -1,6 +1,7 @@
 @import "../bootstrap-3.0.0/less/bootstrap.less";
 
 @font-size-base: 12px;
+@white: #fff;
 
 div.main {
   padding-top: 30px;
@@ -8,8 +9,40 @@ div.main {
 
 header.navbar {
     background-color: #563d7c;
+    color: @white;
 
     h4 {
-        color: #fff;
+        float: left;
+    }
+
+    span.user {
+        margin-top: 15px;
+        float: right;
+    }
+}
+
+table.listing {
+
+    th {
+        cursor: pointer;
+    }
+
+    td.severity {
+      background-position: center;
+      background-repeat: no-repeat;
+      font-size: 0;
+
+      &.Urgent {
+        background-image: url('../img/urgent.png');
+      }
+      &.High {
+        background-image: url('../img/high.png');
+      }
+      &.Medium {
+        background-image: url('../img/medium.png');
+      }
+      &.Low {
+        background-image: url('../img/low.png');
+      }
     }
 }
