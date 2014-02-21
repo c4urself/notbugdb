@@ -7,9 +7,9 @@ var models = require('./models');
 
 var urls = {
     list: 'https://bug.oraclecorp.com/pls/bug/webbug_reports.my_open_bugs',
-    login: 'https://login.oracle.com/mysso/signon.jsp',
-    auth: 'https://login.oracle.com/oam/server/sso/auth_cred_submit',
-    item: 'https://bug.oraclecorp.com/pls/bug/webbug_edit.edit_info_by_rptno?rptno='
+    login: 'https://login.bleh.com/mysso/signon.jsp',
+    auth: 'https://login.bleh.com/oam/server/sso/auth_cred_submit',
+    item: 'https://bug.blehcorp.com/pls/bug/webbug_edit.edit_info_by_rptno?rptno='
 };
 
 var isAuthenticated = function () {
@@ -62,7 +62,7 @@ module.exports = function (app) {
         if (isAuthenticated()) {
             res.redirect('/ticket');
         } else {
-            res.render('login.jade', {title: 'Oracle SSO'});
+            res.render('login.jade', {title: 'Bleh SSO'});
         }
     });
 
