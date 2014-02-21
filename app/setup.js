@@ -11,7 +11,7 @@ module.exports = function () {
     app.use(express.logger('dev'));    // show me what's going on
     app.use(express.bodyParser());     // handle forms
     app.use(express.methodOverride()); // allows for app.put and app.delete
-    app.use(express.cookieParser('nimbula'));
+    app.use(express.cookieParser('bleh'));
     app.use(express.session());
     app.use(function (req, res, next) {
         res.locals.user = req.session.user;
