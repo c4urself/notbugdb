@@ -1,7 +1,7 @@
 {
   "name": "bugdb",
   "version": "0.0.0",
-  "description": "Wrapper around Oracle BugDB",
+  "description": "Wrapper around bleh BugDB",
   "main": "server.js",
   "dependencies": {
     "cheerio-select": "~0.0.3",
