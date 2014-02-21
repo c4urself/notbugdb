@@ -1,7 +1,7 @@
 notbugdb
 ========
 
-Using node to make a betterer version of BugDB
+Learning jade
 
 
 Try it out
