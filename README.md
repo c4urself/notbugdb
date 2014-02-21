@@ -1,7 +1,7 @@
 notbugdb
 ========
 
-Nimbula Not BugDB
+Using node to make a betterer version of BugDB
 
 
 Try it out
